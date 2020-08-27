@@ -11,19 +11,8 @@ RUN yum update -y && yum -y install \
     git \
     nano \
     python
-    
-#Install Powershell
-RUN curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
-RUN yum update -y && yum -y install powershell
-    
+
 #Cleanup image tmp dir
 RUN rm -rf /tmp/*
 
-# Install VMware modules from PSGallery
-SHELL [ "pwsh", "-command" ]
-RUN Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-RUN Install-Module VMware.PowerCLI
-RUN Set-PowerCLIConfiguration -InvalidCertificateAction:ignore -Confirm:$false
-CMD ["/bin/pwsh"]
-    
 ADD VERSION .
